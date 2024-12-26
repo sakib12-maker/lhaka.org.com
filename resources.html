@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #6a11cb, #2575fc);
+            color: #fff;
+        }
+        .header {
+            background-color: #ff7f50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: 1px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .card {
+            background-color: white;
+            color: black;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+        .card h2 {
+            margin-bottom: 10px;
+            color: #ff7f50;
+        }
+        .card p {
+            color: #555;
+        }
+        .card button {
+            background-color: #ff7f50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .card button:hover {
+            background-color: #ff5722;
+        }
+        footer {
+            text-align: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Lahuria Hafez Abdul Karim Academy</h1>
+        <p>Explore all resources at your fingertips</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Notice Board</h2>
+            <p>Stay updated with the latest announcements</p>
+            <button onclick="location.href='notice.html'">View Notices</button>
+        </div>
+        <div class="card">
+            <h2>Teachers</h2>
+            <p>Meet our experienced faculty members</p>
+            <button onclick="location.href='teachers.html'">View Teachers</button>
+        </div>
+        <div class="card">
+            <h2>Upcoming Events</h2>
+            <p>Never miss an exciting event at our school</p>
+            <button onclick="location.href='events.html'">View Events</button>
+        </div>
+        <div class="card">
+            <h2>Admissions</h2>
+            <p>Learn about the admission process</p>
+            <button onclick="location.href='admissions.html'">View Details</button>
+        </div>
+        <div class="card">
+            <h2>Contact Us</h2>
+            <p>Reach out to us for any queries</p>
+            <button onclick="location.href='contact.html'">Get in Touch</button>
+        </div>
+        <div class="card">
+            <h2>Results</h2>
+            <p>Access the latest results</p>
+            <button onclick="location.href='results.html'">View Results</button>
+        </div>
+        <div class="card">
+            <h2>Your ID</h2>
+            <p>Manage your personal ID details</p>
+            <button onclick="location.href='id.html'">View ID</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Your School Name. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

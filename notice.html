@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notice Board</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+            color: #333;
+        }
+
+        .header {
+            background-color: #ff6f61;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .notice {
+            background-color: white;
+            color: #555;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            padding: 15px;
+            position: relative;
+            text-align: left;
+        }
+
+        .notice h3 {
+            color: #ff6f61;
+            margin: 0;
+        }
+
+        .notice p {
+            margin: 10px 0 0;
+        }
+
+        .three-dots {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 35px;
+            right: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown button {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .dropdown button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .add-notice {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            text-align: center;
+            display: none;
+        }
+
+        .add-notice input, .add-notice textarea {
+            width: calc(100% - 20px);
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .add-notice button {
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .add-notice button:hover {
+            background-color: #e55b4b;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Notice Board</div>
+
+    <div class="container" id="noticeContainer"></div>
+
+    <div class="add-notice" id="addNoticeForm">
+        <h3>Add New Notice</h3>
+        <input type="text" id="noticeTitle" placeholder="Notice Title">
+        <textarea id="noticeDescription" rows="4" placeholder="Notice Description"></textarea>
+        <button onclick="addNotice()">Add Notice</button>
+    </div>
+
+    <script>
+        const notices = JSON.parse(localStorage.getItem('notices')) || [];
+        const noticeContainer = document.getElementById('noticeContainer');
+
+        function renderNotices() {
+            noticeContainer.innerHTML = '';
+            notices.sort((a, b) => new Date(b.date) - new Date(a.date));
+            notices.forEach((notice, index) => {
+                const noticeDiv = document.createElement('div');
+                noticeDiv.className = 'notice';
+                noticeDiv.innerHTML = `
+                    <span class="three-dots" onclick="toggleDropdown(this, ${index})">&#x22EE;</span>
+                    <div class="dropdown" id="dropdown-${index}">
+                        <button onclick="deleteNotice(${index})">Delete</button>
+                    </div>
+                    <h3>${notice.title}</h3>
+                    <p>${notice.description}</p>
+                    <small>${new Date(notice.date).toLocaleString()}</small>
+                `;
+                noticeContainer.appendChild(noticeDiv);
+            });
+        }
+
+        function addNotice() {
+            const title = document.getElementById('noticeTitle').value;
+            const description = document.getElementById('noticeDescription').value;
+
+            if (title && description) {
+                const newNotice = {
+                    title,
+                    description,
+                    date: new Date().toISOString(),
+                };
+                notices.push(newNotice);
+                localStorage.setItem('notices', JSON.stringify(notices));
+                renderNotices();
+                document.getElementById('noticeTitle').value = '';
+                document.getElementById('noticeDescription').value = '';
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function deleteNotice(index) {
+            notices.splice(index, 1);
+            localStorage.setItem('notices', JSON.stringify(notices));
+            renderNotices();
+        }
+
+        function toggleDropdown(dotElement, index) {
+            const dropdown = document.getElementById(`dropdown-${index}`);
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function showAddNoticeForm() {
+            document.getElementById('addNoticeForm').style.display = 'block';
+        }
+
+        // Mock login for teachers
+        function teacherLogin() {
+            const username = prompt('Enter Username');
+            const password = prompt('Enter Password');
+
+            if (username === 'office.sc' && password === 'LHAKA12#') {
+                alert('Login Successful!');
+                showAddNoticeForm();
+            } else {
+                alert('Invalid credentials.');
+            }
+        }
+
+        // Add login trigger on three dots in header
+        const header = document.querySelector('.header');
+        header.addEventListener('click', teacherLogin);
+
+        // Initialize the page
+        renderNotices();
+    </script>
+</body>
+</html>

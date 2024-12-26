@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Result Portal</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #FFB6C1, #FF69B4);
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .container {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin: auto;
+      max-width: 700px;
+    }
+    h1 {
+      color: #FF69B4;
+    }
+    .form-input {
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 2px solid #FF69B4;
+      border-radius: 5px;
+      font-size: 16px;
+      width: 100%;
+    }
+    .view-btn, .admin-btn, .submit-btn {
+      background-color: #FF69B4;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .view-btn:hover, .admin-btn:hover, .submit-btn:hover {
+      background-color: #FF1493;
+    }
+    .dashboard-btn {
+      background-color: #FF1493;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .dashboard-btn:hover {
+      background-color: #FF69B4;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #FF69B4;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Student Result Form -->
+  <div class="container">
+    <h1>Student Result Portal</h1>
+
+    <!-- Form for Students to enter ID and Password -->
+    <div id="studentForm">
+      <h2>Enter Your Student ID and Password</h2>
+      <form action="view_result.php" method="POST">
+        <input type="text" name="studentID" class="form-input" placeholder="Student ID" required>
+        <input type="password" name="studentPass" class="form-input" placeholder="Password" required>
+        <button class="view-btn" type="submit">View Result</button>
+      </form>
+    </div>
+
+    <!-- Link for Admin Login -->
+    <a href="#" id="adminLink">
+      <button class="admin-btn">Admin Login</button>
+    </a>
+
+    <!-- Admin Login Form -->
+    <div id="adminLogin" style="display: none;">
+      <h2>Admin Login</h2>
+      <form action="admin_login.php" method="POST">
+        <input type="text" name="username" class="form-input" placeholder="Username" required>
+        <input type="password" name="password" class="form-input" placeholder="Password" required>
+        <button class="admin-btn" type="submit">Login</button>
+      </form>
+    </div>
+
+    <!-- Admin Dashboard (Hidden by default) -->
+    <div id="adminDashboard" style="display: none;">
+      <h2>Admin Dashboard</h2>
+      <a href="#inputStudent" id="inputStudentLink">
+        <button class="dashboard-btn">Input Student ID & Password</button>
+      </a>
+      <a href="#uploadResult" id="uploadResultLink">
+        <button class="dashboard-btn">Upload Results</button>
+      </a>
+      <a href="#" id="logoutLink">
+        <button class="dashboard-btn">Logout</button>
+      </a>
+    </div>
+
+    <!-- Input Multiple Student IDs and Passwords (Admin Page) -->
+    <div id="inputStudent" style="display: none;">
+      <h2>Input Multiple Student IDs and Passwords</h2>
+      <form action="input_student_ids.php" method="POST">
+        <table>
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Password</th>
+            </tr>
+          </thead>
+          <tbody id="studentRows">
+            <tr>
+              <td><input type="text" name="studentID[]" class="form-input" placeholder="Student ID" required></td>
+              <td><input type="password" name="studentPass[]" class="form-input" placeholder="Password" required></td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" onclick="addRow()">Add Another Student</button>
+        <br><br>
+        <button class="submit-btn" type="submit">Save</button>
+      </form>
+    </div>
+
+    <!-- Upload Multiple Result Files (Admin Page) -->
+    <div id="uploadResult" style="display: none;">
+      <h2>Upload Multiple Result Files</h2>
+      <form action="upload_result.php" method="POST" enctype="multipart/form-data">
+        <table>
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Result File</th>
+            </tr>
+          </thead>
+          <tbody id="uploadRows">
+            <tr>
+              <td><input type="text" name="studentID[]" class="form-input" placeholder="Student ID" required></td>
+              <td><input type="file" name="resultFile[]" class="form-input" required></td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" onclick="addUploadRow()">Add Another Result</button>
+        <br><br>
+        <button class="submit-btn" type="submit">Upload</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Function to add another student ID and password row
+    function addRow() {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td><input type="text" name="studentID[]" class="form-input" placeholder="Student ID" required></td>
+        <td><input type="password" name="studentPass[]" class="form-input" placeholder="Password" required></td>
+      `;
+      document.getElementById('studentRows').appendChild(row);
+    }
+
+    // Function to add another result file upload row
+    function addUploadRow() {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td><input type="text" name="studentID[]" class="form-input" placeholder="Student ID" required></td>
+        <td><input type="file" name="resultFile[]" class="form-input" required></td>
+      `;
+      document.getElementById('uploadRows').appendChild(row);
+    }
+
+    // Admin Login Logic
+    document.getElementById('adminLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('studentForm').style.display = 'none';
+      document.getElementById('adminLogin').style.display = 'block';
+    });
+
+    document.getElementById('logoutLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('adminLogin').style.display = 'none';
+      document.getElementById('adminDashboard').style.display = 'none';
+      document.getElementById('studentForm').style.display = 'block';
+    });
+
+    document.querySelector('form[action="admin_login.php"]').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var username = e.target.username.value;
+      var password = e.target.password.value;
+      if (username === 'office.sc' && password === 'LHAKA12#') {
+        document.getElementById('adminLogin').style.display = 'none';
+        document.getElementById('adminDashboard').style.display = 'block';
+      } else {
+        alert('Invalid Credentials');
+      }
+    });
+
+    // Redirect Admin to specific pages
+    document.getElementById('inputStudentLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('inputStudent').style.display = 'block';
+      document.getElementById('uploadResult').style.display = 'none';
+    });
+
+    document.getElementById('uploadResultLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('inputStudent').style.display = 'none';
+      document.getElementById('uploadResult').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
